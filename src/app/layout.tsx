@@ -1,7 +1,7 @@
 import "@/src/styles/globals.css";
 import { Metadata, Viewport } from "next";
 
-import { siteConfig } from "@/src/config/site";
+import { siteConfig } from "../config/site";
 import { Providers } from "../lib/Providers";
 import { Roboto } from "next/font/google";
 import clsx from "clsx";
