@@ -22,3 +22,117 @@ export const links = [
       secure: true,
     },
   ];
+
+
+  const CustomNavbar = () => {
+   
+    return (
+      <Navbar
+        isBordered
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        className="dark:bg-dark bg-secondary-700"
+      >
+        {/* Small screen navbar toggle */}
+        <NavbarContent className="sm:hidden" justify="start">
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          />
+        </NavbarContent>
+  
+        {/* Small screen brand */}
+        <NavbarContent className="sm:hidden pr-3" justify="start">
+          <NavbarBrand>
+            <Link href="/" className="font-semibold text-secondary text-xl">
+              Ultimate <span className="text-primary ms-1">Tripz</span>
+            </Link>
+          </NavbarBrand>
+        </NavbarContent>
+  
+        {/* Large screen brand */}
+        <NavbarContent className="hidden sm:flex gap-4" justify="start">
+          <NavbarBrand>
+            <Link href="/" className="font-semibold text-secondary text-xl">
+              Ultimate <span className="text-primary ms-1">Tripz</span>
+            </Link>
+          </NavbarBrand>
+        </NavbarContent>
+  
+        {/* Large screen links */}
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          {links.map((item, index) => {
+            // Hide secure links if the user is not logged in
+            if (item.secure && !user) return null;
+  
+            // Hide the Dashboard link if the user role is not admin
+            if (item.title === "Dashboard" && user?.role !== "admin") return null;
+  
+            return (
+              <NavbarItem key={index}>
+                <Link color="foreground" href={item.href}>
+                  {item.title}
+                </Link>
+              </NavbarItem>
+            );
+          })}
+        </NavbarContent>
+  
+        {/* User actions (Sign in/Logout) and theme switch */}
+        <NavbarContent justify="end">
+          {!user ? (
+            <NavbarItem className="hidden lg:flex">
+              <Link href="/login">Sign in</Link>
+            </NavbarItem>
+          ) : (
+            <NavbarItem className="hidden lg:flex">
+              <Button className="custom-btn" onClick={handleLogout}>
+                Logout
+              </Button>
+            </NavbarItem>
+          )}
+          <NavbarItem className="hidden lg:flex">
+            <ThemeSwitch />
+          </NavbarItem>
+        </NavbarContent>
+  
+        {/* Small screen menu */}
+        <NavbarMenu>
+          {links.map((item, index) => {
+            // Hide secure links if the user is not logged in
+            if (item.secure && !user) return null;
+  
+            // Hide the Dashboard link if the user role is not admin
+            if (item.title === "Dashboard" && user?.role !== "admin") return null;
+  
+            return (
+              <NavbarMenuItem key={index}>
+                <Link className="w-full" href={item.href}>
+                  {item.title}
+                </Link>
+              </NavbarMenuItem>
+            );
+          })}
+          {/* Sign in/Logout button in the menu for small screens */}
+          {!user ? (
+            <NavbarMenuItem>
+              <Link className="w-full" href="/login">
+                Sign in
+              </Link>
+            </NavbarMenuItem>
+          ) : (
+            <NavbarMenuItem>
+              <Button className="w-full custom-btn" onClick={handleLogout}>
+                Logout
+              </Button>
+            </NavbarMenuItem>
+          )}
+          {/* Theme switcher in the small screen menu */}
+          <NavbarMenuItem>
+            <ThemeSwitch />
+          </NavbarMenuItem>
+        </NavbarMenu>
+      </Navbar>
+    );
+  };
+  
+  export default CustomNavbar;
